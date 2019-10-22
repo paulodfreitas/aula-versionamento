@@ -4,54 +4,87 @@
 
 class Amigo {
 private:
+    std::string nome;
+    char sexo;
+    int idade;
+    std::string  mensagem;
 public:
     Amigo(std::string nome, char sexo, int idade) {
+        this->nome = nome;
+        this->sexo = sexo;
+        this->idade = idade;
+        this->mensagem = "";
     }
 
     std::string get_nome() {
-	return "";
+        return this->nome;
     }
 
     std::string get_mensagem() {
-        return "";
+        return this->mensagem;
     }
 
     char get_sexo() {
-        return 'a';
+        return this->sexo;
     }
 
     int get_idade() {
-        return 0;
+        return this->idade;
     }
 
     void set_mensagem(std::string mensagem) {
+        this->mensagem = mensagem;
     }
 };
 
 class Rede {
+private:
+    std::list<Amigo*> amigos;
 public:
 
     int pesquisar_amigo(std::string nome) {
+        int idx = 0;
+        for (Amigo* amigo : amigos) {
+            if (amigo->get_nome() == nome) {
+                return idx;
+            }
+
+            idx++;
+        }
+
         return -1;
     }
 
     Amigo* obter_amigo(std::string nome) {
+        for (Amigo* amigo : amigos) {
+            if (amigo->get_nome() == nome) {
+                return amigo;
+            }
+        }
+
         return nullptr;
     }
 
     void adicionar_amigo(Amigo* amigo) {
-        
+        this->amigos.push_back(amigo);
     }
 
     void adicionar_amigo(std::string nome, char sexo, int idade) {
-        
+        this->amigos.push_back(new Amigo(nome, sexo, idade));
     }
 
     void remover_amigo (std::string nome) {
-    
+        Amigo *amigo = this->obter_amigo(nome);
+        if (amigo != nullptr) {
+            this->amigos.remove(amigo);
+        }
     }
 
     void enviar_mensagem(std::string nome, std::string mensagem) {
+        Amigo *amigo = this->obter_amigo(nome);
+        if (amigo != nullptr) {
+            amigo->set_mensagem(mensagem);
+        }
     }
 };
 
